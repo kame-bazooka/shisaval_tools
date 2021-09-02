@@ -1,0 +1,36 @@
+# このフローの名前
+name: Deploy to GitHub Page
+
+# masterブランチにpushが走った時に呼ばれる
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    # ubuntuで動かす
+    runs-on: ubuntu-latest
+    steps:
+    # チェックアウトしてくる
+    - uses: actions/checkout@v2
+    # Node.jsのセットアップ
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 16.x
+    # モジュール類のセットアップ
+    - run: yarn install
+    # テストを流す
+    - name: Test
+      run: yarn run coverage
+    # ビルド
+    - name: Build
+      run: yarn run build
+    # できたファイルをそのままコミットする（変更がないと落ちるので、変更がなくても成功したことにする）
+    - name: Deploy
+      continue-on-error: true
+      run: |
+        git config --local user.email "kame-bazooka@outlook.com"
+        git config --local user.name "kame-bazooka"
+        git add .
+        git commit -m "Deploy Application(for GitHub Action)" -a
+        git push origin master

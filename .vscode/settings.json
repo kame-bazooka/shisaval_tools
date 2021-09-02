@@ -1,0 +1,6 @@
+{
+  // これを入れないとブレークポイントにとまらないことがあるらしい
+  "debug.javascript.usePreview": true,
+  // これを入れないとブレークポイントにとまらないことがあるらしい
+  "debug.allowBreakpointsEverywhere": true
+}

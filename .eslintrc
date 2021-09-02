@@ -1,0 +1,87 @@
+{
+  // TypeScriptパーサーで解析
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.eslint.json"],
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  // ブラウザのグローバル変数がある前提
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  // 0は無効、1は警告、2はエラー
+  "rules": {
+     // 変数名やパラメータは別にキャメルケースでなくていい
+    "camelcase": 0,
+    // 使わないクラスメソッドがある分には別にいい
+    "class-methods-use-this": 0,
+    // div とかでもマウスやキーボードイベントを使っていい
+    "jsx-a11y/no-static-element-interactions": 0,
+    // jsx で属性指定が複数行にわたる時でも、別に要素名と同じ行に属性指定を書いていい
+    "react/jsx-first-prop-new-line": 0,
+    // 別に明示的でも else に return 書いていい
+    "no-else-return": 0,
+    // JSX中のimgにaltはなくていい
+    "jsx-a11y/img-has-alt": 0,
+    // ES2015のconstは中身自体の変更はできたりしてややこしいので、constでいい場面でもletで定義するのを許す
+    "prefer-const": 0,
+    // ファイル中に１個しか関数がなくても、defaultエクスポートしなくていい
+    "import/prefer-default-export": 0,
+    // 引数に代入するのは禁止だけど、引数のプロパティは書き換えてもいい
+    "no-param-reassign": [2, { "props": false }],
+    // this.props とかを触る前にいちいちconstに代入しないといけないらしい
+    "react/destructuring-assignment": 0,
+    // 好きな要素にtabindexを設定していい
+    "jsx-a11y/no-noninteractive-tabindex": 0,
+    // a要素のhrefは空でもいい
+    "jsx-a11y/anchor-is-valid": 0,
+    // _で始まる関数名は許可
+    "no-underscore-dangle": 0,
+    // PropTypeにObjectとかを入れてもいい
+    "react/forbid-prop-types": 0,
+    // import では改行はいらない
+    "object-curly-newline": ["error", {"ImportDeclaration": "never"}],
+    // JSXで1行に複数のタグを書いてもいい
+    "react/jsx-one-expression-per-line": 0,
+    // 別に分割代入しないでもいい
+    "prefer-destructuring": 0,
+    // alertとかは使ってもいい
+    "no-alert": 0,
+    // コンソールもOK
+    "no-console": 0,
+    // label に普通に id文字列で関連付けられる
+    "jsx-a11y/label-has-associated-control": 0,
+    // クラスを new するだけで、インスタンスを使い捨てるのはあり
+    "no-new": 0,
+    // target=_blank を使うのにref属性の設定はいらない
+    "react/jsx-no-target-blank": 0,
+    // 画像読んだりする時にコード中で直接requireするのを許す
+    "global-require": 0,
+    // 使ってない引数があっても別にいい
+    "@typescript-eslint/no-unused-vars": 0,
+    // 別にanyを使ってもかまわない
+    "@typescript-eslint/no-explicit-any": 0,
+    // 文字列のクォートはダブルがメイン
+    "@typescript-eslint/quotes": ["error", "double", { "allowTemplateLiterals": true }],
+    // 別にフィールド定義で空行は開けなくていい
+    "@typescript-eslint/lines-between-class-members": 0
+  }
+}
