@@ -11,9 +11,6 @@ import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
 import HelpOutline from "@material-ui/icons/HelpOutline";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-import HelpDialog from "./helpDialog";
-import HelpFile from "../../../../readme.md";
-
 import DeleteDialog from "./deleteDialog";
 
 /**
@@ -28,16 +25,6 @@ export default function Header(): JSX.Element {
   const styleSheet = HeaderStyle();
 
   /**
-   * 表示中のヘルプメッセージ。何か入れるとヘルプダイアログが出ます。
-   */
-  const [FHelpMessage, setHelpMessage] = React.useState("");
-
-  /**
-   * ヘルプを表示するか。trueなら表示されます。
-   */
-  const [FHelpOpen, setHelpOpen] = React.useState(false);
-
-  /**
    * 削除ダイアログを表示するか。trueなら表示されます。
    */
   const [FDeleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
@@ -46,15 +33,7 @@ export default function Header(): JSX.Element {
    * ヘルプボタンを押すと呼ばれるイベントハンドラ
    */
   const onHelpOpen = () => {
-    setHelpMessage(HelpFile);
-    setHelpOpen(true);
-  }
-
-  /**
-   * ヘルプを閉じる必要がある時に呼ばれるイベントハンドラ
-   */
-  const onHelpClose = () => {
-    setHelpOpen(false);
+    window.open("help.htm");
   }
 
   /**
@@ -88,7 +67,6 @@ export default function Header(): JSX.Element {
           </div>
         </Toolbar>
       </AppBar>
-      <HelpDialog helpMarkdown={FHelpMessage} isOpen={FHelpOpen} onDialogClose={onHelpClose} />
       <DeleteDialog isOpen={FDeleteDialogOpen} onDialogClose={onDeleteDialogClose} />
     </div>
   );
