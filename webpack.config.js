@@ -6,11 +6,14 @@ module.exports = (env, options) => {
   return {
     mode: `${options.mode}`,
     target: ["web", "es5"], // Webpackが生成するコードもES5になる
-    entry: "./src/pages/index/index.tsx", // コンパイルの起点になるファイル
+    entry: {
+      index: "./src/pages/index/index.tsx", // アプリケーション本体
+      help: "./src/pages/index/help.tsx"    // ヘルプページ
+    },
     output: {
       // 変換後の出力先
       path: path.resolve(__dirname, "docs"),
-      filename: "bundle.js",
+      filename: "[name].bundle.js",
     },
     module: {
       rules: [
