@@ -88,13 +88,7 @@ export default function BattleSetup(): JSX.Element {
       setErrorDialogOpen(true);
     }
     else {
-      // なければ値を保持して、バトルモードに入る
-      StorageManager.saveDayFlag(p_day_index, {
-        beatCount: p_beat_count,
-        actionCount: p_action_count,
-        tryCount: p_try_count
-      });
-
+      // なければバトルモードに入る
       setBattleDayIndex(p_day_index);
       setBeatFlagCount(p_beat_count);
       setActionFlagCount(p_action_count);
