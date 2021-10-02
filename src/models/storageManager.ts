@@ -5,7 +5,7 @@
  */
 
 /**
- * {@link StorageManager.saveDayFlag} と {@link StorageManager.loadDayFlag}で使うパラメータ
+ * {@link StorageManager.loadDayFlag}で使うパラメータ
  */
 export type DayFlagParamType = {
   /**
@@ -30,15 +30,33 @@ export type DayFlagParamType = {
  */
 export default class StorageManager {
   /**
-   * 曜日ごとに指定した、フラッグ数を記録します。
+   * 曜日ごとに指定した、Beat!!!フラッグ数を記録します。
    *
    * @param p_day_index 曜日番号。{@link utils.ts#DAYS_LABEL} と対応
    * @param p_value 書き込みたい値。
    */
-  static saveDayFlag(p_day_index: number, p_value: DayFlagParamType): void {
-    localStorage.setItem(`flag_${p_day_index}_beat`, p_value.beatCount.toString());
-    localStorage.setItem(`flag_${p_day_index}_action`, p_value.actionCount.toString());
-    localStorage.setItem(`flag_${p_day_index}_try`, p_value.tryCount.toString());
+  static saveDayBeatFlag(p_day_index: number, p_value: number): void {
+    localStorage.setItem(`flag_${p_day_index}_beat`, p_value.toString());
+  }
+
+  /**
+   * 曜日ごとに指定した、Action!フラッグ数を記録します。
+   *
+   * @param p_day_index 曜日番号。{@link utils.ts#DAYS_LABEL} と対応
+   * @param p_value 書き込みたい値。
+   */
+  static saveDayActionFlag(p_day_index: number, p_value: number): void {
+    localStorage.setItem(`flag_${p_day_index}_action`, p_value.toString());
+  }
+
+  /**
+   * 曜日ごとに指定した、Try!フラッグ数を記録します。
+   *
+   * @param p_day_index 曜日番号。{@link utils.ts#DAYS_LABEL} と対応
+   * @param p_value 書き込みたい値。
+   */
+  static saveDayTryFlag(p_day_index: number, p_value: number): void {
+    localStorage.setItem(`flag_${p_day_index}_try`, p_value.toString());
   }
 
   /**

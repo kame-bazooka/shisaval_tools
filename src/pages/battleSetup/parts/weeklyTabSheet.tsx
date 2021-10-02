@@ -9,6 +9,7 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
+import StorageManager from "../../../models/storageManager";
 import { DAYS_LABEL } from "../../../models/utils";
 
 import FlagInputPanel from "./flagInputPanel";
@@ -91,6 +92,45 @@ export default function WeeklyTabSheet(props: WeeklyTabSheetProps): JSX.Element 
    */
   const [FTryFlagCount, setTryFlagCount] = React.useState<number | undefined>(vInitialize.tryFlagCount);
 
+  /**
+   * Beat!!!フラッグの数が変わるたびに呼ばれるイベントハンドラ
+   *
+   * @param p_count 入力値
+   */
+  const onChangeBeatFlag = (p_count: number | undefined) => {
+    setBeatFlagCount(p_count);
+
+    if (p_count) {
+      StorageManager.saveDayBeatFlag(props.dayIndex, p_count);
+    }
+  }
+
+  /**
+   * Action!フラッグの数が変わるたびに呼ばれるイベントハンドラ
+   *
+   * @param p_count 入力値
+   */
+  const onChangeActionFlag = (p_count: number | undefined) => {
+    setActionFlagCount(p_count);
+
+    if (p_count) {
+      StorageManager.saveDayActionFlag(props.dayIndex, p_count);
+    }
+  }
+
+  /**
+   * Try!!フラッグの数が変わるたびに呼ばれるイベントハンドラ
+   *
+   * @param p_count 入力値
+   */
+  const onChangeTryFlag = (p_count: number | undefined) => {
+    setTryFlagCount(p_count);
+
+    if (p_count) {
+      StorageManager.saveDayTryFlag(props.dayIndex, p_count);
+    }
+  }
+
   // コンポーネント作って返す
   return (
     <div role="tabpanel" hidden={props.currentSelectedIndex !== props.dayIndex} id={`vertical-tabpanel-${props.dayIndex}`} aria-labelledby={`vertical-tab-${props.dayIndex}`}>
@@ -107,11 +147,11 @@ export default function WeeklyTabSheet(props: WeeklyTabSheetProps): JSX.Element 
               <FlagInputPanel
                 dayName={DAYS_LABEL[props.dayIndex]}
                 beatFlagCount={FBeatFlagCount}
-                onBeatFlagChange={setBeatFlagCount}
+                onBeatFlagChange={onChangeBeatFlag}
                 actionFlagCount={FActionFlagCount}
-                onActionFlagChange={setActionFlagCount}
+                onActionFlagChange={onChangeActionFlag}
                 tryFlagCount={FTryFlagCount}
-                onTryFlagChange={setTryFlagCount}
+                onTryFlagChange={onChangeTryFlag}
               />
             </Grid>
             <Grid item container xs={12}>
