@@ -13,8 +13,7 @@ export const WeeklyTabsStyle = makeStyles((p_theme: Theme) =>
     root: {
       flexGrow: 1,
       border: `1px solid ${p_theme.palette.divider}`,
-      display: "flex", // 縦型タブにするのに必須
-      height: 950
+      display: "flex" // 縦型タブにするのに必須
     },
     tabs: {
       borderRight: `1px solid ${p_theme.palette.divider}`,
