@@ -10,10 +10,11 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
 import StorageManager from "../../../models/storageManager";
-import { DAYS_LABEL } from "../../../models/utils";
+import { DAYS_LABEL, getRangeArray } from "../../../models/utils";
 
 import FlagInputPanel from "./flagInputPanel";
 import StrategyMemo from "./strategyMemo";
+import TurnStrategyMemo from "../../battle/parts/turnStrategyMemo";
 
 /**
  * タブシートの初期値として必要な値をまとめた型です。
@@ -173,6 +174,18 @@ export default function WeeklyTabSheet(props: WeeklyTabSheetProps): JSX.Element 
             </Grid>
             <Grid item container xs={12}>
               <StrategyMemo dayIndex={props.dayIndex} />
+            </Grid>
+            <Grid item xs={12}>
+              <hr />
+            </Grid>
+            <Grid item container xs={12} spacing={2}>
+            {
+              getRangeArray(10).map((_, index) => (
+                <Grid item xs={3} key={index}>
+                  <TurnStrategyMemo dayIndex={props.dayIndex} turnIndex={index + 1} />
+                </Grid>
+              ))
+            }
             </Grid>
           </Grid>
         </Box>
