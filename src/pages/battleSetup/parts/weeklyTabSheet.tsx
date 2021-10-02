@@ -5,9 +5,14 @@
  */
 import React from "react";
 
+import { Typography } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import StorageManager from "../../../models/storageManager";
 import { DAYS_LABEL, getRangeArray } from "../../../models/utils";
@@ -94,6 +99,11 @@ export default function WeeklyTabSheet(props: WeeklyTabSheetProps): JSX.Element 
   const [FTryFlagCount, setTryFlagCount] = React.useState<number | undefined>(vInitialize.tryFlagCount);
 
   /**
+   * ターンメモエディタが開いているかどうか
+   */
+  const [FIsOpenTurnMemoEditor, setIsOpenTurnMemoEditor] = React.useState<boolean>(false);
+
+  /**
    * Beat!!!フラッグの数が変わるたびに呼ばれるイベントハンドラ
    *
    * @param p_count 入力値
@@ -178,14 +188,23 @@ export default function WeeklyTabSheet(props: WeeklyTabSheetProps): JSX.Element 
             <Grid item xs={12}>
               <hr />
             </Grid>
-            <Grid item container xs={12} spacing={2}>
-            {
-              getRangeArray(10).map((_, index) => (
-                <Grid item xs={3} key={index}>
-                  <TurnStrategyMemo dayIndex={props.dayIndex} turnIndex={index + 1} />
-                </Grid>
-              ))
-            }
+            <Grid item xs={12}>
+              <Accordion expanded={FIsOpenTurnMemoEditor} onChange={() => setIsOpenTurnMemoEditor(!FIsOpenTurnMemoEditor)}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>ターンメモの編集</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid item container xs={12} spacing={2}>
+                  {
+                    getRangeArray(10).map((_, index) => (
+                      <Grid item xs={4} key={index}>
+                        <TurnStrategyMemo dayIndex={props.dayIndex} turnIndex={index + 1} />
+                      </Grid>
+                    ))
+                  }
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
             </Grid>
           </Grid>
         </Box>
