@@ -32,14 +32,5 @@ jobs:
         git config --local user.email "kame-bazooka@outlook.com"
         git config --local user.name "kame-bazooka"
         git add .
-        git commit -m "Deploy Application" -a
+        git commit -m "Deploy Application(for GitHub Action)" -a
         git push origin master
-    # Vercel にデプロイ
-    - name: Deploy Vercel
-      uses: amondnet/vercel-action@v20
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
-        vercel-args: "--prod"
-        vercel-org-id: ${{ secrets.ORG_ID}}  #Required
-        vercel-project-id: ${{ secrets.PROJECT_ID}} #Required
-        working-directory: ./

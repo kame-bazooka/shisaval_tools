@@ -1,6 +1,6 @@
 ## このツールについて
 
-- [https://shisaval-tools.vercel.app](https://shisaval-tools.vercel.app)
+- [https://kame-bazooka.github.io/shisaval_tools/](https://kame-bazooka.github.io/shisaval_tools/)
 - シーサーバル道場を円滑にすすめるための支援機能を提供するツールです。
     - うまく使えば、課金力と運の不足を底上げして、ツリーハウスの中を掛け軸とラッキーさんだらけにする助けになるかもしれません。
 - 最新のChrome系ブラウザで使ってください。
