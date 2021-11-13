@@ -5,69 +5,55 @@
  */
 import React from "react";
 
-import { HeaderStyle } from "./header.css";
-
-import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
-import HelpOutline from "@material-ui/icons/HelpOutline";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { Flex, Spacer, Box, Text, IconButton  } from "@chakra-ui/react";
+import { QuestionIcon, DeleteIcon } from "@chakra-ui/icons";
 
 import DeleteDialog from "./deleteDialog";
 
 /**
- * 全ページの上に出てるヘッダを表すコンポーネントです。
- *
- * @returns ヘッダコンポーネント
- */
+* 全ページの上に出てるヘッダを表すコンポーネントです。
+*
+* @returns ヘッダコンポーネント
+*/
 export default function Header(): JSX.Element {
   /**
-   * スタイルシート
-   */
-  const styleSheet = HeaderStyle();
-
-  /**
-   * 削除ダイアログを表示するか。trueなら表示されます。
-   */
+  * 削除ダイアログを表示するか。trueなら表示されます。
+  */
   const [FDeleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
 
   /**
-   * ヘルプボタンを押すと呼ばれるイベントハンドラ
-   */
+  * ヘルプボタンを押すと呼ばれるイベントハンドラ
+  */
   const onHelpOpen = () => {
     window.open("help.htm");
   }
 
   /**
-   * 削除ボタンを押すと呼ばれるイベントハンドラ
-   */
+  * 削除ボタンを押すと呼ばれるイベントハンドラ
+  */
   const onDeleteDialogOpen = () => {
     setDeleteDialogOpen(true);
   }
 
   /**
-   * 削除ダイアログを閉じる必要がある時に呼ばれるイベントハンドラ
-   */
+  * 削除ダイアログを閉じる必要がある時に呼ばれるイベントハンドラ
+  */
   const onDeleteDialogClose = () => {
     setDeleteDialogOpen(false);
   }
 
   // コンポーネント作って返す
   return (
-    <div>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography>シーサーバル道場支援ツール</Typography>
-          <div className={styleSheet.grow} />
-          <div>
-          <IconButton edge="start" color="inherit" className={styleSheet.imageButton} onClick={onDeleteDialogOpen}>
-            <DeleteIcon />
-          </IconButton>
-          <IconButton edge="start" color="inherit" className={styleSheet.imageButton} onClick={onHelpOpen}>
-            <HelpOutline />
-          </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
+    <>
+      <Flex color="white" bg="blue.600" p={2}>
+        <Box>
+          <Text fontSize="lg" lineHeight="2em">シーサーバル道場支援ツール</Text>
+        </Box>
+        <Spacer />
+        <IconButton aria-label="設定の削除" icon={<DeleteIcon />} verticalAlign="middle" variant="outline" marginRight={2} onClick={onDeleteDialogOpen} />
+        <IconButton aria-label="ヘルプ" icon={<QuestionIcon />} verticalAlign="middle" variant="outline" onClick={onHelpOpen} />
+      </Flex>
       <DeleteDialog isOpen={FDeleteDialogOpen} onDialogClose={onDeleteDialogClose} />
-    </div>
+    </>
   );
 }
