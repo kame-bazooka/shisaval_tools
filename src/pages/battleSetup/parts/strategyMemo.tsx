@@ -54,6 +54,7 @@ export default function StrategyMemo(props: StrategyMemoProps): JSX.Element {
       <Text>{DAYS_LABEL[props.dayIndex]}の攻略メモ</Text>
       <Textarea
         mt={2}
+        resize="vertical"
         isFullWidth
         rows={10}
         value={FStrategyMemo}
