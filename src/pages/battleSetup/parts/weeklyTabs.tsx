@@ -87,13 +87,13 @@ export default function WeeklyTabs(props: WeeklyTabsProps): JSX.Element {
   const funcBuildTabSheet = (p_current_index: number, p_days_label: Array<string>): Array<JSX.Element> => {
     return p_days_label.map((_, p_index: number) => {
       return (
-        <WeeklyTabSheet
-          currentSelectedIndex={p_current_index}
-          dayIndex={p_index}
-          onStartButtonClick={props.onStartButtonClick}
-          onIntialize={props.onIntialize}
-          key={p_index.toString()}
-        />
+        <TabPanel key={p_index.toString()}>
+          <WeeklyTabSheet
+            dayIndex={p_index}
+            onStartButtonClick={props.onStartButtonClick}
+            onIntialize={props.onIntialize}
+          />
+        </TabPanel>
       );
     });
   };
