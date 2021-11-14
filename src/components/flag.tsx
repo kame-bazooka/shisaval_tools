@@ -5,8 +5,7 @@
  */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React from "react";
-
-import { Box, Typography } from "@material-ui/core";
+import { Box, Text } from "@chakra-ui/react";
 
 import { BeatFlagClickableStyle, BeatFlagStyle } from "./flag.css/beatFlag.css";
 import { ActionFlagClickableStyle, ActionFlagStyle } from "./flag.css/actionFlag.css";
@@ -48,11 +47,11 @@ export default function Flag(props: FlagProp): JSX.Element {
   const funcMakeStyle = (p_order_flag_type: OrderFlagType) => {
     switch (p_order_flag_type) {
       case OrderFlagType.Beat:
-        return props.onClick ? BeatFlagClickableStyle() : BeatFlagStyle();
+        return props.onClick ? BeatFlagClickableStyle : BeatFlagStyle;
       case OrderFlagType.Action:
-        return props.onClick ? ActionFlagClickableStyle() : ActionFlagStyle();
+        return props.onClick ? ActionFlagClickableStyle : ActionFlagStyle;
       case OrderFlagType.Try:
-        return props.onClick ? TryFlagClickableStyle() : TryFlagStyle();
+        return props.onClick ? TryFlagClickableStyle : TryFlagStyle;
     }
   }
 
@@ -83,8 +82,8 @@ export default function Flag(props: FlagProp): JSX.Element {
 
   // コンポーネント作って返す
   return (
-    <Box className={funcMakeStyle(props.flag.getType()).root} onClick={onClick}>
-      <Typography>{ funcMakeCaption(props.flag) }</Typography>
+    <Box onClick={onClick} width="6em" ml="auto" mr="auto" mt={2} mb={2} userSelect="none" {...funcMakeStyle(props.flag.getType())}>
+      <Text>{ funcMakeCaption(props.flag) }</Text>
     </Box>
   );
 }

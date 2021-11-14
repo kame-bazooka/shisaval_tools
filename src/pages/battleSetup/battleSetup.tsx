@@ -141,7 +141,7 @@ export default function BattleSetup(): JSX.Element {
 
   // コンポーネント作って返す
   return (
-    <Box p={6}>
+    <Box p={8}>
       {funcGetCurrentPage()}
       <ErrorDialog dialogMessage={FErrorDialogMessage} isOpen={FErrorDialogOpen} onDialogClose={onErrorDialogClose} />
     </Box>

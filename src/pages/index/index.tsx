@@ -21,7 +21,7 @@ import Body from "../battleSetup/battleSetup";
 
 ReactDOM.render(
   <ChakraProvider>
-    <Grid templateRows="auto 1fr" w="100vw" h="100vh">
+    <Grid templateRows="auto 1fr" w="100%" h="100vh">
       <GridItem zIndex="sticky" boxShadow="lg">
         <Header />
       </GridItem>
