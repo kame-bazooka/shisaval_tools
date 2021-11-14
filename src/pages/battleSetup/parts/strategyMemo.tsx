@@ -4,10 +4,7 @@
  * @license MIT License
  */
 import React from "react";
-
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
+import { Flex, Text, Textarea } from "@chakra-ui/react";
 
 import StorageManager from "../../../models/storageManager";
 import { DAYS_LABEL } from "../../../models/utils";
@@ -43,7 +40,7 @@ export default function StrategyMemo(props: StrategyMemoProps): JSX.Element {
    *
    * @param p_event 入力値
    */
-  const onStrategyMemoInputChange = (p_event: React.ChangeEvent<HTMLInputElement>) => {
+  const onStrategyMemoInputChange = (p_event: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (p_event.target.value.length <= 4096) {
       setStrategyMemo(p_event.target.value);
 
@@ -53,23 +50,16 @@ export default function StrategyMemo(props: StrategyMemoProps): JSX.Element {
 
   // コンポーネント作って返す
   return (
-    <>
-      <Grid item xs={12}>
-        <Typography>
-          {DAYS_LABEL[props.dayIndex]}の攻略メモ
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          multiline
-          fullWidth={true}
-          rows={10}
-          value={FStrategyMemo}
-          placeholder="値を更新するたびに自動保存します。4096文字まで入力可能。"
-          variant="outlined"
-          onChange={onStrategyMemoInputChange}
-          />
-      </Grid>
-    </>
+    <Flex flexDirection="column">
+      <Text>{DAYS_LABEL[props.dayIndex]}の攻略メモ</Text>
+      <Textarea
+        mt={2}
+        isFullWidth
+        rows={10}
+        value={FStrategyMemo}
+        placeholder="値を更新するたびに自動保存します。4096文字まで入力可能。"
+        onChange={onStrategyMemoInputChange}
+      />
+    </Flex>
   );
 }
