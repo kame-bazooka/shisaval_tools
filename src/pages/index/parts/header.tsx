@@ -5,8 +5,8 @@
  */
 import React from "react";
 
-import { Flex, Spacer, Box, Text, IconButton  } from "@chakra-ui/react";
-import { QuestionIcon, DeleteIcon } from "@chakra-ui/icons";
+import { Flex, Spacer, Text, IconButton, Switch, Box, useColorMode  } from "@chakra-ui/react";
+import { QuestionIcon, DeleteIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 import DeleteDialog from "./deleteDialog";
 
@@ -20,6 +20,11 @@ export default function Header(): JSX.Element {
   * 削除ダイアログを表示するか。trueなら表示されます。
   */
   const [FDeleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+
+  /**
+   * ダークモードの切り替え
+   */
+  const { colorMode, toggleColorMode } = useColorMode();
 
   /**
   * ヘルプボタンを押すと呼ばれるイベントハンドラ
@@ -45,13 +50,15 @@ export default function Header(): JSX.Element {
   // コンポーネント作って返す
   return (
     <>
-      <Flex color="white" bg="blue.600" p={2}>
-        <Box>
-          <Text fontSize="lg" lineHeight="2em">シーサーバル道場支援ツール</Text>
-        </Box>
+      <Flex p={2}>
+        <Text fontSize="lg" display="flex" alignItems="center">シーサーバル道場支援ツール</Text>
         <Spacer />
-        <IconButton aria-label="設定の削除" icon={<DeleteIcon />} verticalAlign="middle" variant="outline" marginRight={2} onClick={onDeleteDialogOpen} />
-        <IconButton aria-label="ヘルプ" icon={<QuestionIcon />} verticalAlign="middle" variant="outline" onClick={onHelpOpen} />
+        <Box display="flex" alignItems="center" marginRight={2}>
+          { colorMode === "light" ? <SunIcon /> : <MoonIcon /> }
+        </Box>
+        <Switch colorScheme="red" display="flex" alignItems="center" marginRight={4} onChange={toggleColorMode} isChecked={colorMode === "dark"} />
+        <IconButton display="flex" aria-label="設定の削除" icon={<DeleteIcon />} alignItems="center" variant="outline" marginRight={2} onClick={onDeleteDialogOpen} />
+        <IconButton display="flex" aria-label="ヘルプ" icon={<QuestionIcon />} alignItems="center" variant="outline" onClick={onHelpOpen} />
       </Flex>
       <DeleteDialog isOpen={FDeleteDialogOpen} onDialogClose={onDeleteDialogClose} />
     </>
