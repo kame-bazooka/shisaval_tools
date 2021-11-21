@@ -7,7 +7,6 @@ import React from "react";
 
 import { Box, Text, Grid, Flex, Divider, Button } from "@chakra-ui/react";
 import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon} from "@chakra-ui/react";
-import { BattleStyle } from "./battle.css";
 
 import BattleManager from "../../models/battleManager";
 import { OrderFlag } from "../../models/types/orderFlag";
@@ -42,11 +41,6 @@ export interface BattleProps {
  * @returns 戦闘ページ
  */
 export default function Battle(props: BattleProps): JSX.Element {
-  /**
-   * スタイルシート
-   */
-  const styleSheet = BattleStyle();
-
   /**
    * 確定された状態の入ったバトルマネージャ
    */
