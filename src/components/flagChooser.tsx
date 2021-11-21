@@ -5,7 +5,7 @@
  */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React from "react";
-import { Grid, Flex, Box } from "@chakra-ui/react";
+import { Grid, Flex, Box, useColorModeValue } from "@chakra-ui/react";
 
 import { OrderFlag, OrderFlagType } from "../models/types/orderFlag";
 import { getRangeArray } from "../models/utils";
@@ -67,7 +67,13 @@ export default function FlagChooser(props: FlagChooserProps): JSX.Element {
   };
 
   const HighlightStyle = {
-    border: `2px solid blue`
+    borderWidth: 2,
+    borderColor: useColorModeValue("red.500", "white")
+  };
+
+  const NoHighlightStyle = {
+    borderWidth: 2,
+    borderColor: "#0000"
   };
 
   /**
@@ -94,9 +100,8 @@ export default function FlagChooser(props: FlagChooserProps): JSX.Element {
    */
   const funcMakeHighlight = (p_element: JSX.Element, p_flag: OrderFlag): JSX.Element => {
     return (props.highlightFlag && p_flag.getType() === props.highlightFlag.getType()) ?
-              <Box {...HighlightStyle}>
-                { p_element }
-              </Box> : p_element;
+              <Box {...HighlightStyle}>{ p_element }</Box> :
+              <Box {...NoHighlightStyle}>{ p_element }</Box>;
   }
 
   /**

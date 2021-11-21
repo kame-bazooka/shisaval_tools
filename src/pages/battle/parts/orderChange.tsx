@@ -174,7 +174,7 @@ export default function OrderChange(props: OrderChangeProps): JSX.Element {
             </Box>
             <Text>4. まだ回数が残っており、オーダーチェンジを続ける場合は1～3を繰り返し、終わったら終了ボタンで終わらせます。</Text>
           </Box>
-          <Box p={2}>
+          <Box p={2} m={2} borderWidth={1}>
             <Text>次ターン開始時の残り山札</Text>
             <FlagChooser
               beatFlags={props.predictionBattleManager.flags().stack().getBeatFlags()}

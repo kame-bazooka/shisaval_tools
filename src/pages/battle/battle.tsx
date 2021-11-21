@@ -5,8 +5,8 @@
  */
 import React from "react";
 
-import { Box, Text, Grid, Flex, Divider, Button } from "@chakra-ui/react";
-import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon} from "@chakra-ui/react";
+import { Box, Text, Grid, Flex, Divider, Button, useColorModeValue } from "@chakra-ui/react";
+import { Accordion, AccordionItem, AccordionButton, AccordionPanel} from "@chakra-ui/react";
 
 import BattleManager from "../../models/battleManager";
 import { OrderFlag } from "../../models/types/orderFlag";
@@ -79,6 +79,16 @@ export default function Battle(props: BattleProps): JSX.Element {
    * 処理ステップがどこまで進んでいるか。「0」が最初。
    */
   const [FAccordionStepIndex, setAccordionStepIndex] = React.useState<number>(0);
+
+  const TurnHeaderStyle = {
+    backgroundColor: useColorModeValue("#3F51B5", "gray.900"),
+    color: useColorModeValue("white", "white")
+  }
+
+  const StepHeaderStyle = {
+    backgroundColor: useColorModeValue("red.600", "red.500"),
+    color: useColorModeValue("white", "white")
+  }
 
   /**
    * ターン終了ボタンを押した時のイベントハンドラ
@@ -174,7 +184,7 @@ export default function Battle(props: BattleProps): JSX.Element {
   // コンポーネント作って返す
   return (
     <Box>
-      <Box p={2} zIndex="sticky" boxShadow="lg">
+      <Box p={2} zIndex="sticky" boxShadow="lg" {...TurnHeaderStyle}>
         <Text fontSize="lg">ターン{FBattleManager.getCurrentTurn()}</Text>
       </Box>
       <Grid p={2} templateColumns="1fr 400px" gap={2}>
@@ -182,9 +192,8 @@ export default function Battle(props: BattleProps): JSX.Element {
         <Accordion index={FAccordionStepIndex}>
           <AccordionItem isDisabled={FAccordionStepIndex !== 0}>
             <h2>
-              <AccordionButton _expanded={{ bg: "tomato", color: "white" }}>
+              <AccordionButton _expanded={StepHeaderStyle}>
                 <Box flex="1" textAlign="left">Step1</Box>
-                <AccordionIcon />
               </AccordionButton>
             </h2>
             <AccordionPanel pb={4}>
@@ -198,9 +207,8 @@ export default function Battle(props: BattleProps): JSX.Element {
 
           <AccordionItem isDisabled={FAccordionStepIndex !== 1}>
             <h2>
-              <AccordionButton _expanded={{ bg: "tomato", color: "white" }}>
+              <AccordionButton _expanded={StepHeaderStyle}>
                 <Box flex="1" textAlign="left">Step2</Box>
-                <AccordionIcon />
               </AccordionButton>
             </h2>
             <AccordionPanel pb={4}>
@@ -231,7 +239,7 @@ export default function Battle(props: BattleProps): JSX.Element {
         </Accordion>
         </Box>
         <Flex p={2} flexDirection="column">
-          <Box p={2}>
+          <Box p={2} m={2} borderWidth={1}>
             <Text>次ターン開始時の残り山札</Text>
             <FlagChooser
               beatFlags={FPredictionBattleManager.flags().stack().getBeatFlags()}
@@ -239,13 +247,13 @@ export default function Battle(props: BattleProps): JSX.Element {
               tryFlags={FPredictionBattleManager.flags().stack().getTryFlags()}
             />
           </Box>
-          <Box p={2}>
+          <Box p={2} m={2} borderWidth={1}>
             {
               FBattleManager.getCurrentTurn() > 10 ? null :
                 <TurnStrategyMemo dayIndex={props.dayIndex} turnIndex={FBattleManager.getCurrentTurn()} />
             }
           </Box>
-          <Box p={2}>
+          <Box p={2} m={2} borderWidth={1}>
             <GeneralCounter />
           </Box>
         </Flex>

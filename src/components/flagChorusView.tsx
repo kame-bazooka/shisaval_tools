@@ -5,7 +5,7 @@
  */
 import React from "react";
 
-import { Grid, Box } from "@chakra-ui/react";
+import { Grid, Box, useColorModeValue } from "@chakra-ui/react";
 
 import { OrderFlag } from "../models/types/orderFlag";
 import Flag from "./flag";
@@ -47,7 +47,13 @@ export default function FlagChorusView(props: FlagChorusViewProps): JSX.Element 
   };
 
   const FlagChorusViewHighlightStyle = {
-    border: `2px solid blue`
+    borderWidth: 2,
+    borderColor: useColorModeValue("red.500", "white")
+  };
+
+  const NoFlagChorusViewHighlightStyle = {
+    borderWidth: 2,
+    borderColor: "#0000"
   };
 
   /**
@@ -62,10 +68,9 @@ export default function FlagChorusView(props: FlagChorusViewProps): JSX.Element 
   *   そうでないなら p_element がそのまま戻ってきます。
   */
   const funcMakeHighlight = (p_element: JSX.Element, p_idx: number): JSX.Element => {
-    return (p_idx !== props.highlightIndex) ? p_element :
-              <Box { ...FlagChorusViewHighlightStyle }>
-                { p_element }
-              </Box>;
+    return (p_idx !== props.highlightIndex) ?
+              <Box { ...NoFlagChorusViewHighlightStyle }>{ p_element }</Box> :
+              <Box { ...FlagChorusViewHighlightStyle }>{ p_element }</Box>;
   }
 
   /**

@@ -62,7 +62,9 @@ export default function HandsChooser(props: HandsChooserProps): JSX.Element {
     <Box p={2}>
       {
         props.selectedFlags.length >= 5 ? 
-          <Text>既に5枚選択済みです</Text> :
+          <Box textAlign="center">
+            <Text>既に5枚選択済みです</Text>
+          </Box> :
           <Box>
             <FlagChooser
               beatFlags={[new OrderFlag(OrderFlagType.Beat)]}
@@ -72,10 +74,10 @@ export default function HandsChooser(props: HandsChooserProps): JSX.Element {
             />
           </Box>
       }
-      <Box p={2} zIndex="sticky" boxShadow="lg">
+      <Box m={2} borderWidth={2} zIndex="sticky" boxShadow="lg">
       {
         props.selectedFlags.length === 0 ? 
-            <Text>何も選択されていません</Text> :
+            <Text p={2}>何も選択されていません</Text> :
             <FlagChorusView
               flags={props.selectedFlags}
               onSelect={onDeleteHand}
