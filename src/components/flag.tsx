@@ -7,10 +7,6 @@
 import React from "react";
 import { Box, Text } from "@chakra-ui/react";
 
-import { BeatFlagClickableStyle, BeatFlagStyle } from "./flag.css/beatFlag.css";
-import { ActionFlagClickableStyle, ActionFlagStyle } from "./flag.css/actionFlag.css";
-import { TryFlagClickableStyle, TryFlagStyle } from "./flag.css/tryFlag.css";
-
 import { OrderFlag, OrderFlagType } from "../models/types/orderFlag";
 
 /**
@@ -38,6 +34,42 @@ export interface FlagProp {
  * @returns フラッグ
  */
 export default function Flag(props: FlagProp): JSX.Element {
+  const BeatFlagStyle = {
+    border: `1px solid #C4B064`,
+    borderLeft: `10px solid #FE4004`,
+    backgroundColor: "#FA7236",
+    color: "#FFECEE",
+    paddingLeft: "10px"
+  };
+
+  const BeatFlagClickableStyle = {
+    ...BeatFlagStyle, cursor: "pointer"
+  };
+
+  const ActionFlagStyle = {
+    border: `1px solid #60BED9`,
+    borderLeft: `10px solid #0171D2`,
+    backgroundColor: "#1F90E4",
+    color: "#D6E8F9",
+    paddingLeft: "10px"
+  };
+
+  const ActionFlagClickableStyle = {
+    ...ActionFlagStyle, cursor: "pointer"
+  };
+
+  const TryFlagStyle = {
+    border: `1px solid #BCF27F`,
+    borderLeft: `10px solid #129D07`,
+    backgroundColor: "#59CC3A",
+    color: "#EBF8E4",
+    paddingLeft: "10px"
+  };
+
+  const TryFlagClickableStyle = {
+    ...TryFlagStyle, cursor: "pointer"
+  };
+
   /**
    * オーダーフラッグの種類に合わせたスタイルを返します。
    *
