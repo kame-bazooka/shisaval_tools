@@ -34,10 +34,13 @@
     "webpack-dev-server": "^4.1.0"
   },
   "dependencies": {
-    "@material-ui/core": "^4.11.4",
-    "@material-ui/icons": "^4.11.2",
+    "@chakra-ui/icons": "^1.1.1",
+    "@chakra-ui/react": "^1.7.1",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "assert": "^2.0.0",
     "core-js": "^3.17.1",
+    "framer-motion": "^4",
     "process": "^0.11.10",
     "react": "^17.0.2",
     "react-app-polyfill": "^2.0.0",

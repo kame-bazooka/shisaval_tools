@@ -5,9 +5,8 @@
  */
 import React from "react";
 
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
+import { Box, Text } from "@chakra-ui/react";
+import { NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper} from "@chakra-ui/react";
 
 /**
  * 主に強敵を殴った数カウンターコンポーネントです。
@@ -22,31 +21,21 @@ export default function GeneralCounter(): JSX.Element {
    */
   const [FPunchCount, setPunchCount] = React.useState(0);
 
-  /**
-   * カウンタをいじるたびに呼ばれるハンドラ
-   * @param p_event 入力イベント
-   */
-  const onPunchCountChange = (p_event: React.ChangeEvent<HTMLInputElement>) => {
-    const vCount: number = parseInt(p_event.target.value, 10) ?? FPunchCount;
-    setPunchCount(vCount < 0 ? 0 : vCount);
+  const onCounterChange = (p_value_str: string, p_value_num: number) => {
+    setPunchCount(p_value_num);
   };
 
   // コンポーネントを作って返す
   return (
-    <Grid container direction="row" justifyContent="flex-start" alignItems="flex-start">
-      <Grid item xs={12}>
-        <Typography>
-          カウンタ
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          type="number"
-          fullWidth={true}
-          value={FPunchCount}
-          onChange={onPunchCountChange}
-        />
-      </Grid>
-    </Grid>
+    <Box>
+      <Text>カウンタ</Text>
+      <NumberInput size="sm" defaultValue={FPunchCount} min={0} onChange={onCounterChange}>
+        <NumberInputField />
+        <NumberInputStepper>
+          <NumberIncrementStepper />
+          <NumberDecrementStepper />
+        </NumberInputStepper>
+      </NumberInput>
+    </Box>
   );
 }

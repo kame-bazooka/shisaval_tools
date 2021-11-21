@@ -7,12 +7,11 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import React from "react";
 
-import { Tabs, Tab } from "@material-ui/core";
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 
 import WeeklyTabSheet from "./weeklyTabSheet";
 import { WeeklyTabSheetInitializeType } from "./weeklyTabSheet";
 
-import {WeeklyTabsStyle} from "./weeklyTabs.css";
 import { DAYS_LABEL } from "../../../models/utils";
 
 /**
@@ -49,11 +48,6 @@ export interface WeeklyTabsProps {
  */
 export default function WeeklyTabs(props: WeeklyTabsProps): JSX.Element {
   /**
-   * スタイルシート
-   */
-  const styleSheet = WeeklyTabsStyle();
-
-  /**
    * 今選択されているタブインデックス
    */
   const [FCurrentIndex, setCurrentIndex] = React.useState(props.selectedDayIndex);
@@ -64,7 +58,7 @@ export default function WeeklyTabs(props: WeeklyTabsProps): JSX.Element {
    * @param p_event タブイベント
    * @param p_new_index 新たに選択されたタブのインデックス値
    */
-  const onChangeTab = (p_event: React.ChangeEvent<{}>, p_new_index: number) => {
+  const onChangeTab = (p_new_index: number) => {
     setCurrentIndex(p_new_index);
   };
 
@@ -77,12 +71,7 @@ export default function WeeklyTabs(props: WeeklyTabsProps): JSX.Element {
   const funcBuildTab = (p_days_label: Array<string>): Array<JSX.Element> => {
     return p_days_label.map((p_day: string, p_index: number) => {
       return (
-        <Tab
-          label={p_day}
-          id={`vertical-tab-${p_index}`}
-          aria-controls={`vertical-tabpanel-${p_index}`}
-          key={p_index.toString()}
-        />
+        <Tab key={p_index.toString()}>{p_day}</Tab>
       );
     });
   };
@@ -98,25 +87,26 @@ export default function WeeklyTabs(props: WeeklyTabsProps): JSX.Element {
   const funcBuildTabSheet = (p_current_index: number, p_days_label: Array<string>): Array<JSX.Element> => {
     return p_days_label.map((_, p_index: number) => {
       return (
-        <WeeklyTabSheet
-          currentSelectedIndex={p_current_index}
-          dayIndex={p_index}
-          onStartButtonClick={props.onStartButtonClick}
-          onIntialize={props.onIntialize}
-          key={p_index.toString()}
-        />
+        <TabPanel key={p_index.toString()}>
+          <WeeklyTabSheet
+            dayIndex={p_index}
+            onStartButtonClick={props.onStartButtonClick}
+            onIntialize={props.onIntialize}
+          />
+        </TabPanel>
       );
     });
   };
 
   // コンポーネント作って返す
   return (
-    <div className={styleSheet.root}>
-      <Tabs orientation="vertical" variant="scrollable" value={FCurrentIndex} className={styleSheet.tabs} onChange={onChangeTab}>
+    <Tabs orientation="vertical" onChange={onChangeTab} defaultIndex={FCurrentIndex}>
+      <TabList width="8em">
         {...funcBuildTab(DAYS_LABEL)}
-      </Tabs>
-
-      {...funcBuildTabSheet(FCurrentIndex, DAYS_LABEL)}
-    </div>
+      </TabList>
+      <TabPanels>
+        {...funcBuildTabSheet(FCurrentIndex, DAYS_LABEL)}
+      </TabPanels>
+    </Tabs>
   );
 }
