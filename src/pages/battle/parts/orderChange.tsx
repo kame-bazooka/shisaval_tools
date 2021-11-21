@@ -4,17 +4,8 @@
  * @license MIT License
  */
 import React from "react";
-
-import { OrderChangeStyle } from "./orderChange.css";
-
-import Dialog from "@material-ui/core/Dialog";
-import { Box, Card, CardContent, CardHeader } from "@material-ui/core";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import MuiDialogContent from "@material-ui/core/DialogContent";
-import MuiDialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+import { Text, Button, Box, Grid } from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody } from "@chakra-ui/react";
 
 import FlagChorusView from "../../../components/flagChorusView";
 import FlagChooser from "../../../components/flagChooser";
@@ -64,11 +55,6 @@ export interface OrderChangeProps {
  * @returns オーダーチェンジダイアログ
  */
 export default function OrderChange(props: OrderChangeProps): JSX.Element {
-  /**
-   * スタイルシート
-   */
-  const styleSheet = OrderChangeStyle();
-
   /**
    * 手札セレクタの選択位置
    */
@@ -145,80 +131,63 @@ export default function OrderChange(props: OrderChangeProps): JSX.Element {
     }
   }
 
+  /**
+   * ダイアログの外枠をクリックした時のイベントです。
+   * 必須なので指定していますが、閉じられたりしたくないので、何もしません。
+   */
+  const onDummyFinish = () => {
+    // 何もしない
+  };
+
   // コンポーネント作って返す
   return (
-    <Dialog open={props.isEnabled} aria-labelledby="customized-dialog-title" fullWidth={true} maxWidth={"lg"}>
-      <MuiDialogTitle disableTypography>
-        <Typography variant="h6">オーダーチェンジ（{`残り${5 - FChangeCount}`}回）</Typography>
-      </MuiDialogTitle>
-      <MuiDialogContent dividers>
-        <Grid container direction="row" justifyContent="flex-start" alignItems="flex-start" spacing={2} className={styleSheet.root}>
-          <Grid item container direction="row" justifyContent="flex-end" alignItems="flex-start" spacing={2} >
-            <Grid item container direction="row" justifyContent="flex-start" alignItems="flex-start" spacing={2} xs={8}>
-              <Grid item xs={12}>
-                <Typography gutterBottom>
-                  1. オーダーチェンジで切り替えたい札を選んでください。
-                </Typography>
-                <Box p={2}>
-                  <FlagChorusView flags={props.hands} highlightIndex={FSelectedHandIndex} onSelect={onOrderChangeTarget} />
-                </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography gutterBottom>
-                  2. 切り替えた後に出てきた札を選んでください。
-                </Typography>
-                <Box p={2}>
-                  <FlagChooser
-                    highlightFlag={FSelectedNextFlag}
-                    beatFlags={[new OrderFlag(OrderFlagType.Beat)]}
-                    actionFlags={[new OrderFlag(OrderFlagType.Action)]}
-                    tryFlags={[new OrderFlag(OrderFlagType.Try)]}
-                    onSelect={onOrderChangeNextFlag}
-                  />
-                </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography gutterBottom>
-                  3. 良ければ以下のボタンで確定してください。
-                  もう回数が無い場合は確定と同時にダイアログが閉じます。
-                </Typography>
-                <Box p={2}>
-                  <Button
-                    onClick={onOrderChangeExecute} 
-                    variant="outlined" 
-                    fullWidth={true} 
-                    disabled={(FSelectedHandIndex === undefined) || (FSelectedNextFlag === undefined)} 
-                  >
-                    確定
-                  </Button>
-                </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography gutterBottom>
-                  4. まだ回数が残っており、オーダーチェンジを続ける場合は1～3を繰り返し、終わったら終了ボタンで終わらせます。
-                </Typography>
-              </Grid>
-            </Grid>
-            <Grid item xs={4}>
-              <Card className={styleSheet.predictionFlagCard}>
-                <CardHeader title="次ターン開始時の残り山札" />
-                <CardContent>
-                  <FlagChooser
-                    beatFlags={props.predictionBattleManager.flags().stack().getBeatFlags()}
-                    actionFlags={props.predictionBattleManager.flags().stack().getActionFlags()}
-                    tryFlags={props.predictionBattleManager.flags().stack().getTryFlags()}
-                  />
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
+    <Modal onClose={onDummyFinish} isOpen={props.isEnabled}>
+      <ModalOverlay />
+      <ModalContent minW="1024px">
+        <ModalHeader>オーダーチェンジ（{`残り${5 - FChangeCount}`}回）</ModalHeader>
+        <ModalBody>
+        <Grid p={2} templateColumns="1fr 400px" gap={2}>
+          <Box p={2}>
+            <Text>1. オーダーチェンジで切り替えたい札を選んでください。</Text>
+            <Box p={2}>
+              <FlagChorusView flags={props.hands} highlightIndex={FSelectedHandIndex} onSelect={onOrderChangeTarget} />
+            </Box>
+            <Text>2. 切り替えた後に出てきた札を選んでください。</Text>
+            <Box p={2}>
+              <FlagChooser
+                highlightFlag={FSelectedNextFlag}
+                beatFlags={[new OrderFlag(OrderFlagType.Beat)]}
+                actionFlags={[new OrderFlag(OrderFlagType.Action)]}
+                tryFlags={[new OrderFlag(OrderFlagType.Try)]}
+                onSelect={onOrderChangeNextFlag}
+              />
+            </Box>
+            <Text>3. 良ければ以下のボタンで確定してください。もう回数が無い場合は確定と同時にダイアログが閉じます。</Text>
+            <Box p={2}>
+              <Button
+                isFullWidth
+                onClick={onOrderChangeExecute}
+                disabled={(FSelectedHandIndex === undefined) || (FSelectedNextFlag === undefined)} 
+              >
+                確定
+              </Button>
+            </Box>
+            <Text>4. まだ回数が残っており、オーダーチェンジを続ける場合は1～3を繰り返し、終わったら終了ボタンで終わらせます。</Text>
+          </Box>
+          <Box p={2}>
+            <Text>次ターン開始時の残り山札</Text>
+            <FlagChooser
+              beatFlags={props.predictionBattleManager.flags().stack().getBeatFlags()}
+              actionFlags={props.predictionBattleManager.flags().stack().getActionFlags()}
+              tryFlags={props.predictionBattleManager.flags().stack().getTryFlags()}
+            />
+          </Box>
         </Grid>
-      </MuiDialogContent>
-      <MuiDialogActions>
-        <Button onClick={props.onFinish} color="primary">
-          終了
-        </Button>
-      </MuiDialogActions>
-    </Dialog>
+        </ModalBody>
+        <ModalFooter>
+          <Button isFullWidth colorScheme="blue" mr={3} onClick={props.onFinish}>終了</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 }
