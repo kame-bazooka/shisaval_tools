@@ -252,10 +252,7 @@ export default function Battle(props: BattleProps): JSX.Element {
             }
           </Box>
           <Box p={2}>
-            {
-              FBattleManager.getCurrentTurn() > 10 ? null :
-                <TurnStrategyMemo dayIndex={props.dayIndex} turnIndex={FBattleManager.getCurrentTurn()} />
-            }
+            <GeneralCounter />
           </Box>
         </Flex>
       </Grid>
