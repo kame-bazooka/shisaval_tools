@@ -143,7 +143,7 @@ export default function WeeklyTabSheet(props: WeeklyTabSheetProps): JSX.Element 
         tryFlagCount={FTryFlagCount}
         onTryFlagChange={onChangeTryFlag}
       />
-      <Button m={4} onClick={() => props.onStartButtonClick(props.dayIndex, FBeatFlagCount ?? 1, FActionFlagCount ?? 1, FTryFlagCount ?? 1)}>
+      <Button m={4} colorScheme="blue" onClick={() => props.onStartButtonClick(props.dayIndex, FBeatFlagCount ?? 1, FActionFlagCount ?? 1, FTryFlagCount ?? 1)}>
         開始
       </Button>
       <Divider mb={4} />
