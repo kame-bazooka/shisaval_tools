@@ -5,17 +5,9 @@
  */
 import React from "react";
 
+import { Box, Text, Grid, Flex, Divider, Button } from "@chakra-ui/react";
+import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon} from "@chakra-ui/react";
 import { BattleStyle } from "./battle.css";
-
-import { AppBar, Toolbar, Typography, Box } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
 
 import BattleManager from "../../models/battleManager";
 import { OrderFlag } from "../../models/types/orderFlag";
@@ -90,9 +82,9 @@ export default function Battle(props: BattleProps): JSX.Element {
   const [FIsOrderChange, setOrderChange] = React.useState<boolean>(false);
 
   /**
-   * 処理ステップがどこまで進んでいるか。「1」が最初。
+   * 処理ステップがどこまで進んでいるか。「0」が最初。
    */
-  const [FAccordionStepIndex, setAccordionStepIndex] = React.useState<number>(1);
+  const [FAccordionStepIndex, setAccordionStepIndex] = React.useState<number>(0);
 
   /**
    * ターン終了ボタンを押した時のイベントハンドラ
@@ -108,7 +100,7 @@ export default function Battle(props: BattleProps): JSX.Element {
     // 次のターンに進む
     setSelectedHands([]);
     setSelectedAddHands([]);
-    setAccordionStepIndex(1);
+    setAccordionStepIndex(0);
   };
 
   /**
@@ -177,7 +169,7 @@ export default function Battle(props: BattleProps): JSX.Element {
    */
   const onStep1Finish = () => {
     // 手札を固定化して次のステップに進む
-    setAccordionStepIndex(2);
+    setAccordionStepIndex(1);
 
     let vNewBattleManager: BattleManager = FBattleManager.clone();
     vNewBattleManager.drawHandFlag(FSelectedHands);
@@ -187,145 +179,89 @@ export default function Battle(props: BattleProps): JSX.Element {
 
   // コンポーネント作って返す
   return (
-    <Box className={styleSheet.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography>ターン{FBattleManager.getCurrentTurn()}</Typography>
-        </Toolbar>
-      </AppBar>
-      <Box p={3}>
-        <Grid container direction="row" justifyContent="flex-start" alignItems="flex-start" spacing={2}>
-          <Grid item container direction="row" justifyContent="flex-end" alignItems="flex-start" spacing={2}>
-            <Grid item container direction="row" justifyContent="flex-start" alignItems="flex-start" spacing={2} xs={8}>
-              <div className={styleSheet.accordionRoot}>
-                <Accordion expanded={FAccordionStepIndex === 1} disabled={FAccordionStepIndex !== 1}>
-                  <AccordionSummary>
-                    <Typography>Step1</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Grid container direction="row" spacing={2} className={styleSheet.accordionGrid}>
-                      <Grid item xs={12}>
-                        <Typography>
-                          １. ターン開始時に配られたフラッグを、左から順に下のボックスのフラッグをクリックすることで選択してください。選び終わったら「確定」ボタンを押してください。
-                          札を選び間違えた場合は、選んだ札をクリックすると消せます。
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <HandsChooser selectedFlags={FSelectedHands} onUpdateFlag={onHandsUpdate} />
-                      </Grid>
-                      <Grid item xs={2} />
-                      <Grid item xs>
-                        <Button
-                          className={styleSheet.orderChangeButton}
-                          variant="outlined"
-                          fullWidth={true}
-                          onClick={onStep1Finish}
-                        >
-                          確定
-                        </Button>
-                      </Grid>
-                      <Grid item xs={2} />
-                    </Grid>
-                  </AccordionDetails>
-                </Accordion>
-                <Accordion expanded={FAccordionStepIndex === 2} disabled={FAccordionStepIndex !== 2}>
-                  <AccordionSummary>
-                    <Typography>Step2</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Grid container direction="row" spacing={2} className={styleSheet.accordionGrid}>
-                      <Grid item xs={12}>
-                        <Typography>
-                        ２．オーダーチェンジをする場合は、下のオーダーチェンジボタンを押してください。しない場合は飛ばして「３」の操作をしてください。
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={2} />
-                      <Grid item xs>
-                        <Button
-                          className={styleSheet.orderChangeButton}
-                          variant="outlined"
-                          fullWidth={true}
-                          onClick={onOrderChangeBegin}
-                          disabled={FSelectedAddHands.length !== 0}
-                        >
-                          オーダーチェンジをする
-                        </Button>
-                        <OrderChange
-                          isEnabled={FIsOrderChange}
-                          hands={FBattleManager.hands()}
-                          predictionBattleManager={FPredictionBattleManager}
-                          onFinish={onOrderChangeEnd}
-                          onOrderChange={onOrderChange} />
-                      </Grid>
-                      <Grid item xs={2} />
-                      <Grid item xs={12}>
-                        <hr />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography>
-                          ３. フラッグをめくった後に追加で配られたフラッグを、出てきた順に全て指定してください。
-                        </Typography>
-                        <Typography>
-                          おかわりした分もここで指定してください。たいきスキルによるコーラス自動参加分は含みません。
-                          終わったら「ターン終了」ボタンを押してください。
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <HandsChooser selectedFlags={FSelectedAddHands} onUpdateFlag={onAddHandsUpdate} />
-                      </Grid>
-                      <Grid item xs={1} />
-                        <Grid item xs={10}>
-                          <Button
-                            variant="outlined"
-                            color="primary"
-                            fullWidth={true}
-                            onClick={onTurnEndButtonClick}
-                          >
-                            ターン終了
-                          </Button>
-                        </Grid>
-                        <Grid item  xs={1} />
-                    </Grid>
-                  </AccordionDetails>
-                </Accordion>
-              </div>
-            </Grid>
+    <Box>
+      <Box p={2} zIndex="sticky" boxShadow="lg">
+        <Text fontSize="lg">ターン{FBattleManager.getCurrentTurn()}</Text>
+      </Box>
+      <Grid p={2} templateColumns="1fr 400px" gap={2}>
+        <Box p={2}>
+        <Accordion index={FAccordionStepIndex}>
+          <AccordionItem isDisabled={FAccordionStepIndex !== 0}>
+            <h2>
+              <AccordionButton _expanded={{ bg: "tomato", color: "white" }}>
+                <Box flex="1" textAlign="left">Step1</Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+              <Text>１. ターン開始時に配られたフラッグを、左から順に下のボックスのフラッグをクリックすることで選択してください。選び終わったら「確定」ボタンを押してください。札を選び間違えた場合は、選んだ札をクリックすると消せます。</Text>
+              <Box p={2}>
+                <HandsChooser selectedFlags={FSelectedHands} onUpdateFlag={onHandsUpdate} />
+              </Box>
+              <Button m={2} isFullWidth colorScheme="blue" onClick={onStep1Finish}>確定</Button>
+            </AccordionPanel>
+          </AccordionItem>
 
-            <Grid item xs={4}>
-              <Card className={styleSheet.predictionFlagCard}>
-                <CardHeader title="次ターン開始時の残り山札" />
-                <CardContent>
-                  <FlagChooser
-                    beatFlags={FPredictionBattleManager.flags().stack().getBeatFlags()}
-                    actionFlags={FPredictionBattleManager.flags().stack().getActionFlags()}
-                    tryFlags={FPredictionBattleManager.flags().stack().getTryFlags()}
-                  />
-                </CardContent>
-              </Card>
-              {
-                FBattleManager.getCurrentTurn() > 10 ? null :
-                  <Card className={styleSheet.turnMemoCard}>
-                    <CardContent>
-                      <TurnStrategyMemo dayIndex={props.dayIndex} turnIndex={FBattleManager.getCurrentTurn()} />
-                    </CardContent>
-                  </Card>
-              }
-              <Card className={styleSheet.enemyPunchCounterCard}>
-                <CardContent>
-                  <GeneralCounter />
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
-          <Grid item container xs={12}>
-            <Grid item xs={12}>
-              <hr />
-            </Grid>
-            <Grid item xs={12}>
-              <StrategyMemo dayIndex={props.dayIndex} />
-            </Grid>
-          </Grid>
-        </Grid>
+          <AccordionItem isDisabled={FAccordionStepIndex !== 1}>
+            <h2>
+              <AccordionButton _expanded={{ bg: "tomato", color: "white" }}>
+                <Box flex="1" textAlign="left">Step2</Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+              <Text>２．オーダーチェンジをする場合は、下のオーダーチェンジボタンを押してください。しない場合は飛ばして「３」の操作をしてください。</Text>
+              <Box p={2}>
+                <Button isFullWidth={true} onClick={onOrderChangeBegin} disabled={FSelectedAddHands.length !== 0}>
+                  オーダーチェンジをする
+                </Button>
+                <OrderChange
+                  isEnabled={FIsOrderChange}
+                  hands={FBattleManager.hands()}
+                  predictionBattleManager={FPredictionBattleManager}
+                  onFinish={onOrderChangeEnd}
+                  onOrderChange={onOrderChange} />
+              </Box>
+              <Divider mb={4} />
+              <Text>３. フラッグをめくった後に追加で配られたフラッグを、出てきた順に全て指定してください。おかわりした分もここで指定してください。たいきスキルによるコーラス自動参加分は含みません。終わったら「ターン終了」ボタンを押してください。</Text>
+              <Box p={2}>
+                <HandsChooser selectedFlags={FSelectedAddHands} onUpdateFlag={onAddHandsUpdate} />
+              </Box>
+              <Box p={2}>
+                <Button m={2} isFullWidth colorScheme="blue" onClick={onTurnEndButtonClick}>
+                  ターン終了
+                </Button>
+              </Box>
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+        </Box>
+        <Flex p={2} flexDirection="column">
+          <Box p={2}>
+            <Text>次ターン開始時の残り山札</Text>
+            <FlagChooser
+              beatFlags={FPredictionBattleManager.flags().stack().getBeatFlags()}
+              actionFlags={FPredictionBattleManager.flags().stack().getActionFlags()}
+              tryFlags={FPredictionBattleManager.flags().stack().getTryFlags()}
+            />
+          </Box>
+          <Box p={2}>
+            {
+              FBattleManager.getCurrentTurn() > 10 ? null :
+                <TurnStrategyMemo dayIndex={props.dayIndex} turnIndex={FBattleManager.getCurrentTurn()} />
+            }
+          </Box>
+          <Box p={2}>
+            {
+              FBattleManager.getCurrentTurn() > 10 ? null :
+                <TurnStrategyMemo dayIndex={props.dayIndex} turnIndex={FBattleManager.getCurrentTurn()} />
+            }
+          </Box>
+        </Flex>
+      </Grid>
+      <Divider mb={4} />
+      <Box p={2}>
+        <StrategyMemo dayIndex={props.dayIndex} />
       </Box>
     </Box>
   );
