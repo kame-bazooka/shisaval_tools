@@ -5,13 +5,11 @@
  */
 import React from "react";
 
-import Dialog from "@material-ui/core/Dialog";
-import MuiDialogContent from "@material-ui/core/DialogContent";
-import MuiDialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from "@chakra-ui/react";
+import { Button, Divider, Flex } from "@chakra-ui/react";
 
 import StorageManager from "../../../models/storageManager";
-import {DAYS_LABEL, getRangeArray} from "../../../models/utils";
+import { DAYS_LABEL, getRangeArray } from "../../../models/utils";
 
 /**
  * {@link DeleteDialog}コンポーネントのプロパティです。
@@ -48,12 +46,12 @@ export default function DeleteDialog(props: DeleteDialogProps): JSX.Element {
         getRangeArray(10).forEach((p_turn_idx) => {
           StorageManager.deleteDayTurnStrategyMemo(p_day_idx, p_turn_idx + 1);
         });
-      })
+      });
 
       location.reload();
     }
-  }
-  
+  };
+
   /**
    * フラッグ初期化ボタンを押した時のイベントハンドラ
    */
@@ -64,29 +62,30 @@ export default function DeleteDialog(props: DeleteDialogProps): JSX.Element {
     if (vIsOk) {
       DAYS_LABEL.forEach((_, p_day_idx) => {
         StorageManager.deleteDayFlag(p_day_idx);
-      })
+      });
 
       location.reload();
     }
-  }
+  };
 
   // コンポーネント作って返す
   return (
-    <Dialog onClose={props.onDialogClose} open={props.isOpen} aria-labelledby="customized-dialog-title">
-      <MuiDialogContent dividers>
-        <div>
-          <Button variant="contained" fullWidth={true} onClick={onMemoClear}>すべての曜日のメモを全部消す</Button>
-        </div>
-        <hr />
-        <div>
-          <Button variant="contained" fullWidth={true} onClick={onFlagClear}>すべての曜日のフラッグ情報を全部消す</Button>
-        </div>
-      </MuiDialogContent>
-      <MuiDialogActions>
-        <Button onClick={props.onDialogClose} color="primary">
-          閉じる
-        </Button>
-      </MuiDialogActions>
-    </Dialog>
+    <Modal onClose={props.onDialogClose} isOpen={props.isOpen}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>設定情報の削除</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Flex flexDirection="column">
+            <Button onClick={onMemoClear}>すべての曜日のメモを全部消す</Button>
+            <Divider mt={5} />
+            <Button onClick={onFlagClear}>すべての曜日のフラッグ情報を全部消す</Button>
+          </Flex>
+        </ModalBody>
+        <ModalFooter>
+          <Button colorScheme="blue" mr={3} onClick={props.onDialogClose}>閉じる</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 }

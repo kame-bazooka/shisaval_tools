@@ -4,10 +4,7 @@
  * @license MIT License
  */
 import React from "react";
-
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
+import { Flex, Text, Textarea } from "@chakra-ui/react";
 
 import StorageManager from "../../../models/storageManager";
 
@@ -55,7 +52,7 @@ export default function TurnStrategyMemo(props: TurnStragegyMemoProps): JSX.Elem
    *
    * @param p_event 入力イベント
    */
-  const onTurnStrategyMemoInputChange = (p_event: React.ChangeEvent<HTMLInputElement>) => {
+  const onTurnStrategyMemoInputChange = (p_event: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (p_event.target.value.length <= 1024) {
       setTurnStrategyMemo(p_event.target.value);
 
@@ -65,23 +62,17 @@ export default function TurnStrategyMemo(props: TurnStragegyMemoProps): JSX.Elem
 
   // コンポーネントを作って返す
   return (
-    <>
-      <Grid item xs={12}>
-        <Typography>
-          {props.turnIndex}ターン目のメモ
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          multiline
-          fullWidth={true}
-          rows={3}
-          value={FTurnStrategyMemo}
-          placeholder="値を更新するたびに自動保存します。1024文字まで入力可能。"
-          variant="outlined"
-          onChange={onTurnStrategyMemoInputChange}
-          />
-      </Grid>
-    </>
+    <Flex flexDirection="column">
+      <Text>{props.turnIndex}ターン目のメモ</Text>
+      <Textarea
+        mt={2}
+        resize="vertical"
+        isFullWidth
+        rows={3}
+        value={FTurnStrategyMemo}
+        placeholder="値を更新するたびに自動保存します。1024文字まで入力可能。"
+        onChange={onTurnStrategyMemoInputChange}
+      />
+    </Flex>
   );
 }

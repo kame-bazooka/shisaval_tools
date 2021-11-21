@@ -4,10 +4,8 @@
  * @license MIT License
  */
 import React from "react";
-
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
+import { Grid, Flex, Text } from "@chakra-ui/react";
+import { NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper} from "@chakra-ui/react";
 
 import { OrderFlag, OrderFlagType } from "../../../models/types/orderFlag";
 import Flag from "../../../components/flag";
@@ -29,7 +27,7 @@ type FlagInputPanelItemProps = {
   /**
    * フラッグ数の入力値が変わるたびに呼ばれるイベントハンドラ
    */
-  onFlagCountChange: (p_event: React.ChangeEvent<HTMLInputElement>) => void;
+  onFlagCountChange: (p_value_str: string, p_value_num: number) => void;
 };
 
 /**
@@ -40,15 +38,16 @@ type FlagInputPanelItemProps = {
  */
 function FlagInputPanelItem(props: FlagInputPanelItemProps): JSX.Element {
   return (
-    <Grid item xs={2}>
+    <Flex flexDirection="column">
       <Flag flag={props.flag} />
-      <TextField
-        type="number"
-        fullWidth={true}
-        value={props.flagCount}
-        onChange={props.onFlagCountChange}
-      />
-    </Grid>
+      <NumberInput size="sm" defaultValue={props.flagCount} min={1} max={25} onChange={props.onFlagCountChange}>
+        <NumberInputField />
+        <NumberInputStepper>
+          <NumberIncrementStepper />
+          <NumberDecrementStepper />
+        </NumberInputStepper>
+      </NumberInput>
+    </Flex>
   );
 }
 
@@ -101,64 +100,38 @@ export type FlagInputPanelProps = {
  */
 export default function FlagInputPanel(props: FlagInputPanelProps): JSX.Element {
   /**
-   * 入力された値をオーダーフラッグの数的にありえる値に補正します。
-   * 具体的には空文字のときの「undefined」か、1～25になります。
-   *
-   * @param p_value 入力値
-   * @returns 1～25に補正された値
-   */
-  const normalizeFlagCount = (p_value: string): number | undefined => {
-    if (p_value === "") {
-      return undefined;
-    }
-    let vIntValue: number = parseInt(p_value, 10);
-    vIntValue = isNaN(vIntValue) ? 1 : vIntValue;
-    vIntValue = vIntValue <= 0 ? 1 : vIntValue;
-    vIntValue = vIntValue >= 25 ? 25 : vIntValue;
-    return vIntValue;
-  }
-
-  /**
    * Beat!!!フラッグの数が変わると呼ばれるイベントハンドラ
    * @param p_event 入力値
    */
-  const onBeatInputChange = (p_event: React.ChangeEvent<HTMLInputElement>) => {
-    props.onBeatFlagChange(normalizeFlagCount(p_event.target.value));
+  const onBeatInputChange = (p_value_str: string, p_value_num: number) => {
+    props.onBeatFlagChange(p_value_num);
   };
 
   /**
    * Action!フラッグの数が変わると呼ばれるイベントハンドラ
    * @param p_event 入力値
    */
-  const onActionInputChange = (p_event: React.ChangeEvent<HTMLInputElement>) => {
-    props.onActionFlagChange(normalizeFlagCount(p_event.target.value));
+  const onActionInputChange = (p_value_str: string, p_value_num: number) => {
+    props.onActionFlagChange(p_value_num);
   };
 
   /**
    * Try!!フラッグの数が変わると呼ばれるイベントハンドラ
    * @param p_event 入力値
    */
-  const onTryInputChange = (p_event: React.ChangeEvent<HTMLInputElement>) => {
-    props.onTryFlagChange(normalizeFlagCount(p_event.target.value));
+  const onTryInputChange = (p_value_str: string, p_value_num: number) => {
+    props.onTryFlagChange(p_value_num);
   };
 
   // コンポーネント作って返す
   return (
-    <>
-      <Grid item xs={12}>
-        <Typography>
-          {props.dayName}のフラッグの総数を入力してください。
-        </Typography>
-      </Grid>
-      <Grid item container xs={12}>
-        <Grid item xs={1} />
+    <Flex flexDirection="column">
+      <Text>{props.dayName}のフラッグの総数を入力してください。</Text>
+      <Grid templateColumns="repeat(3, 1fr)" gap={8} ml={10} mr={10}>
         <FlagInputPanelItem flag={new OrderFlag(OrderFlagType.Beat)} flagCount={props.beatFlagCount} onFlagCountChange={onBeatInputChange} />
-        <Grid item xs />
         <FlagInputPanelItem flag={new OrderFlag(OrderFlagType.Action)} flagCount={props.actionFlagCount} onFlagCountChange={onActionInputChange} />
-        <Grid item xs />
         <FlagInputPanelItem flag={new OrderFlag(OrderFlagType.Try)} flagCount={props.tryFlagCount} onFlagCountChange={onTryInputChange} />
-        <Grid item xs={1} />
       </Grid>
-    </>
+    </Flex>
   );
 }

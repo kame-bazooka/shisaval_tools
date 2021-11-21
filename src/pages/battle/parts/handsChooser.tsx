@@ -4,10 +4,7 @@
  * @license MIT License
  */
 import React from "react";
-
-import { HandsChooserStyle } from "./handsChooser.css";
-
-import { Paper, Typography } from "@material-ui/core";
+import { Box, Text } from "@chakra-ui/react";
 
 import FlagChooser from "../../../components/flagChooser";
 import FlagChorusView from "../../../components/flagChorusView";
@@ -41,11 +38,6 @@ export interface HandsChooserProps {
  */
 export default function HandsChooser(props: HandsChooserProps): JSX.Element {
   /**
-   * スタイルシート
-   */
-  const styleSheet = HandsChooserStyle();
-
-  /**
    * フラッグセレクタが選択され、追加の必要がある時に呼ばれるイベントです。
    * 新たに手札にフラッグを追加します。
    *
@@ -67,29 +59,31 @@ export default function HandsChooser(props: HandsChooserProps): JSX.Element {
 
   // コンポーネント作って返す
   return (
-    <>
+    <Box p={2}>
       {
         props.selectedFlags.length >= 5 ? 
-          <Typography className={styleSheet.selector}>既に5枚選択済みです</Typography> :
-          <div>
+          <Box textAlign="center">
+            <Text>既に5枚選択済みです</Text>
+          </Box> :
+          <Box>
             <FlagChooser
               beatFlags={[new OrderFlag(OrderFlagType.Beat)]}
               actionFlags={[new OrderFlag(OrderFlagType.Action)]}
               tryFlags={[new OrderFlag(OrderFlagType.Try)]}
               onSelect={onAddHand}
             />
-          </div>
+          </Box>
       }
-      <Paper elevation={5} className={styleSheet.root}>
+      <Box m={2} borderWidth={2} zIndex="sticky" boxShadow="lg">
       {
         props.selectedFlags.length === 0 ? 
-            <Typography className={styleSheet.selector}>何も選択されていません</Typography> :
+            <Text p={2}>何も選択されていません</Text> :
             <FlagChorusView
               flags={props.selectedFlags}
               onSelect={onDeleteHand}
             />
       }
-      </Paper>
-    </>
+      </Box>
+    </Box>
   );
 }

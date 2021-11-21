@@ -5,11 +5,7 @@
  */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React from "react";
-
-import { FlagChooserStyle } from "./flagChooser.css";
-
-import { Box } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+import { Grid, Flex, Box, useColorModeValue } from "@chakra-ui/react";
 
 import { OrderFlag, OrderFlagType } from "../models/types/orderFlag";
 import { getRangeArray } from "../models/utils";
@@ -63,10 +59,22 @@ export interface FlagChooserProps {
  * @returns フラッグ選択コンポーネント
  */
 export default function FlagChooser(props: FlagChooserProps): JSX.Element {
-  /**
-   * スタイルシート
-   */
-  const styleSheet = FlagChooserStyle();
+  const RootStyle = {
+    marginLeft: "auto",
+    marginRight: "auto",
+    paddingLeft: "10px",
+    paddingRight: "10px"
+  };
+
+  const HighlightStyle = {
+    borderWidth: 2,
+    borderColor: useColorModeValue("red.500", "white")
+  };
+
+  const NoHighlightStyle = {
+    borderWidth: 2,
+    borderColor: "#0000"
+  };
 
   /**
    * フラッグがクリックされた時のイベントを発火します。
@@ -92,9 +100,8 @@ export default function FlagChooser(props: FlagChooserProps): JSX.Element {
    */
   const funcMakeHighlight = (p_element: JSX.Element, p_flag: OrderFlag): JSX.Element => {
     return (props.highlightFlag && p_flag.getType() === props.highlightFlag.getType()) ?
-              <Box className={styleSheet.highlight}>
-                { p_element }
-              </Box> : p_element;
+              <Box {...HighlightStyle}>{ p_element }</Box> :
+              <Box {...NoHighlightStyle}>{ p_element }</Box>;
   }
 
   /**
@@ -105,54 +112,23 @@ export default function FlagChooser(props: FlagChooserProps): JSX.Element {
    * @returns オーダーフラッグコントロールの配列
    */
   const funcBuildFlag = (p_flag_count: number, p_flag: OrderFlag): JSX.Element[] => {
-    return getRangeArray(p_flag_count).map((p_number: number) => {
-      return (
-        <Grid item xs key={p_number.toString()}>
-          { funcMakeHighlight(<Flag flag={p_flag} onClick={props.onSelect ? onFlagClick : undefined} />, p_flag) }
-        </Grid>
-      );
-    });
+    return getRangeArray(p_flag_count).map((p_number: number) =>
+      funcMakeHighlight(<Flag flag={p_flag} onClick={props.onSelect ? onFlagClick : undefined} />, p_flag)
+    );
   };
 
   // コンポーネント作って返す
   return (
-    <Grid
-      container
-      direction="row"
-      justifyContent="flex-start"
-      alignItems="flex-start"
-      className={styleSheet.root}
-    >
-      <Grid
-        item
-        container
-        xs={4}
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-      >
+    <Grid templateColumns="repeat(3, 1fr)" gap={2} {...RootStyle}>
+      <Flex flexDirection="column">
         {...funcBuildFlag(props.beatFlags.length, new OrderFlag(OrderFlagType.Beat))}
-      </Grid>
-      <Grid
-        item
-        container
-        xs={4}
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="center"
-      >
+      </Flex>
+      <Flex flexDirection="column">
         {...funcBuildFlag(props.actionFlags.length, new OrderFlag(OrderFlagType.Action))}
-      </Grid>
-      <Grid
-        item
-        container
-        xs={4}
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="flex-end"
-      >
+      </Flex>
+      <Flex flexDirection="column">
         {...funcBuildFlag(props.tryFlags.length, new OrderFlag(OrderFlagType.Try))}
-      </Grid>
+      </Flex>
     </Grid>
   );
 }
