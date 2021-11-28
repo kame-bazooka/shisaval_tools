@@ -38,7 +38,7 @@ export default function DeleteDialog(props: DeleteDialogProps): JSX.Element {
    */
   const onMemoClear = () => {
     const vIsOk = window.confirm(
-      "ターンメモ含め、全ての曜日のすべてのメモを消します。\r\n\r\n本当によろしいですか？"
+      "ターンメモ含め、全ての曜日のすべてのメモと花丸を消します。\r\n\r\n本当によろしいですか？"
     );
     if (vIsOk) {
       DAYS_LABEL.forEach((_, p_day_idx) => {
@@ -46,6 +46,7 @@ export default function DeleteDialog(props: DeleteDialogProps): JSX.Element {
         getRangeArray(10).forEach((p_turn_idx) => {
           StorageManager.deleteDayTurnStrategyMemo(p_day_idx, p_turn_idx + 1);
         });
+        StorageManager.deleteDayWhiteFlower(p_day_idx);
       });
 
       location.reload();
