@@ -49,6 +49,14 @@ export default class StorageManager {
   }
 
   /**
+   * 指定曜日の花丸状態を消します。
+   * @param p_day_index 
+   */
+  static deleteDayWhiteFlower(p_day_index: number): void {
+    localStorage.removeItem(`flower_${p_day_index}`);
+  }
+
+  /**
    * 曜日ごとに指定した、Beat!!!フラッグ数を記録します。
    *
    * @param p_day_index 曜日番号。{@link utils.ts#DAYS_LABEL} と対応
