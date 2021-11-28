@@ -12,7 +12,8 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import WeeklyTabSheet from "./weeklyTabSheet";
 import { WeeklyTabSheetInitializeType } from "./weeklyTabSheet";
 
-import { DAYS_LABEL } from "../../../models/utils";
+import StorageManager from "../../../models/storageManager";
+import { DAYS_LABEL, getRangeArray } from "../../../models/utils";
 
 /**
  * {@link WeeklyTabs}コンポーネントのプロパティです。
@@ -40,6 +41,14 @@ export interface WeeklyTabsProps {
 }
 
 /**
+ * 強制的に再描画をさせるためのHook。呼ぶたびにカウンタが変わるので描画が強制される。
+ */
+function useForceUpdate() {
+  const [value, setValue] = React.useState<number>(0);
+  return () => setValue(value => value + 1);
+}
+
+/**
  * トップページのタブの枠を切り出したコンポーネント。
  * 曜日ごとのタブの中身は{@link WeeklyTabSheet}にあります。
  *
@@ -53,6 +62,20 @@ export default function WeeklyTabs(props: WeeklyTabsProps): JSX.Element {
   const [FCurrentIndex, setCurrentIndex] = React.useState(props.selectedDayIndex);
 
   /**
+   * タブごとの花丸の状態を持つ配列。0が月曜。
+   */
+  const [FFlowers, setFlowers] = React.useState(() => {
+    return getRangeArray(7).map(
+      (p_idx) => StorageManager.loadDayWhiteFlower(p_idx)
+    );
+  });
+
+  /**
+   * タブのタイトルを変えても反応がないので、強制的に更新するHook
+   */
+  const forceUpdate = useForceUpdate();
+
+  /**
    * タブが切り替わるたびに呼ばれるイベントハンドラ
    *
    * @param p_event タブイベント
@@ -63,6 +86,19 @@ export default function WeeklyTabs(props: WeeklyTabsProps): JSX.Element {
   };
 
   /**
+   * タブをダブルクリックするたびに呼ばれるイベントハンドラ
+   */
+  const onTabDoubleClick = () => {
+    // 花丸を切り替える
+    const vNewFlowers = Object.assign(FFlowers, { [FCurrentIndex]: !FFlowers[FCurrentIndex] }); // []で囲うと値が展開される
+    StorageManager.saveDayWhiteFlower(FCurrentIndex, vNewFlowers[FCurrentIndex]);
+    setFlowers(vNewFlowers);
+
+    // 強制的に再描画しないとうまくいかない
+    forceUpdate();
+  }
+
+  /**
    * 曜日ラベルを渡すと、それに対応するタブを作る
    *
    * @param p_days_label 曜日ラベル
@@ -70,8 +106,9 @@ export default function WeeklyTabs(props: WeeklyTabsProps): JSX.Element {
    */
   const funcBuildTab = (p_days_label: Array<string>): Array<JSX.Element> => {
     return p_days_label.map((p_day: string, p_index: number) => {
+      const vFlower = FFlowers[p_index] ? "\u{1F4AE}" : "";
       return (
-        <Tab key={p_index.toString()}>{p_day}</Tab>
+        <Tab key={p_index.toString()} onDoubleClick={onTabDoubleClick}>{vFlower + p_day}</Tab>
       );
     });
   };

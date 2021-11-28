@@ -45,7 +45,7 @@ export default class StorageManager {
    * @return trueなら花丸、falseなら立ってない
    */
   static loadDayWhiteFlower(p_day_index: number): boolean {
-    return (localStorage.getItem(`memo_${p_day_index}`) === "1");
+    return (localStorage.getItem(`flower_${p_day_index}`) === "1");
   }
 
   /**
