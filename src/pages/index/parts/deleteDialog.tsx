@@ -47,6 +47,7 @@ export default function DeleteDialog(props: DeleteDialogProps): JSX.Element {
           StorageManager.deleteDayTurnStrategyMemo(p_day_idx, p_turn_idx + 1);
         });
         StorageManager.deleteDayWhiteFlower(p_day_idx);
+        StorageManager.deleteDayMemoHeight(p_day_idx);
       });
 
       location.reload();

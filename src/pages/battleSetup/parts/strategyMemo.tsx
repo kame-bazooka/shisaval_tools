@@ -4,6 +4,7 @@
  * @license MIT License
  */
 import React from "react";
+import useResizeObserver from "@react-hook/resize-observer";
 import { Flex, Text, Textarea } from "@chakra-ui/react";
 
 import StorageManager from "../../../models/storageManager";
@@ -36,6 +37,34 @@ export default function StrategyMemo(props: StrategyMemoProps): JSX.Element {
   );
 
   /**
+   * テキストエリアのDOM要素
+   */
+  const FTextArea = React.useRef<HTMLTextAreaElement>(null);
+
+  /**
+   * テキストエリアの初期の高さをセットする
+   */
+  React.useEffect(() => {
+    if (FTextArea.current) {
+      const vHeight = StorageManager.loadDayMemoHeight(props.dayIndex);
+      if (vHeight) {
+        FTextArea.current.style.height = `${vHeight}px`;
+      }
+    }
+  }, []);
+
+  /**
+   * テキストエリアのリサイズを監視するHook
+   */
+  useResizeObserver(FTextArea, (entry) => {
+    // ElementにはoffsetHeightがない
+    if ((entry.target as HTMLTextAreaElement).offsetHeight) {
+      // 最初に開いたときはundefinedが入っている
+      StorageManager.saveDayMemoHeight(props.dayIndex, ((entry.target as HTMLTextAreaElement).offsetHeight));
+    }
+  });
+
+  /**
    * メモが書き換わるたびに呼ばれるイベントハンドラ
    *
    * @param p_event 入力値
@@ -53,6 +82,7 @@ export default function StrategyMemo(props: StrategyMemoProps): JSX.Element {
     <Flex flexDirection="column">
       <Text>{DAYS_LABEL[props.dayIndex]}の攻略メモ</Text>
       <Textarea
+        ref={FTextArea}
         mt={2}
         resize="vertical"
         isFullWidth
