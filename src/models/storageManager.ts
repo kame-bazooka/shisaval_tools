@@ -30,6 +30,25 @@ export type DayFlagParamType = {
  */
 export default class StorageManager {
   /**
+   * 曜日ごとに花丸を立てたり取ったりします。
+   * @param p_day_index 曜日番号。{@link utils.ts#DAYS_LABEL} と対応
+   * @param p_value trueなら花丸が立つ、falseなら取れる
+   */
+  static saveDayWhiteFlower(p_day_index: number, p_value: boolean): void {
+    localStorage.setItem(`flower_${p_day_index}`, p_value ? "1" : "0");
+  }
+
+  /**
+   * 曜日ごとの花丸状態を読み出します。
+   *
+   * @param p_day_index 曜日番号。{@link utils.ts#DAYS_LABEL} と対応
+   * @return trueなら花丸、falseなら立ってない
+   */
+  static loadDayWhiteFlower(p_day_index: number): boolean {
+    return (localStorage.getItem(`memo_${p_day_index}`) === "1");
+  }
+
+  /**
    * 曜日ごとに指定した、Beat!!!フラッグ数を記録します。
    *
    * @param p_day_index 曜日番号。{@link utils.ts#DAYS_LABEL} と対応
