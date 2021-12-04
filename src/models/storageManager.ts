@@ -66,7 +66,7 @@ export default class StorageManager {
   static saveDayWhiteFlower(p_day_index: number, p_value: boolean): void {
     localStorage.setItem(`flower_${p_day_index}`, p_value ? "1" : "0");
   }
-  
+
   /**
    * 曜日ごとの花丸状態を読み出します。
    *
@@ -169,34 +169,5 @@ export default class StorageManager {
    */
   static deleteDayStrategyMemo(p_day_index: number): void {
     localStorage.removeItem(`memo_${p_day_index}`);
-  }
-
-  /**
-   * 日ごとのターンごとの攻略メモを保存します。
-   * @param p_day_index 曜日番号。{@link utils.ts#DAYS_LABEL} と対応
-   * @param p_turn_index ターン番号
-   * @param p_value 書き込む値
-   */
-  static saveDayTurnStrategyMemo(p_day_index: number, p_turn_index: number, p_value: string): void {
-    localStorage.setItem(`memo_${p_day_index}_${p_turn_index}`, p_value);
-  }
-
-  /**
-   * 日ごとのターンごとの攻略メモを読み出します。
-   * @param p_day_index  曜日番号。{@link utils.ts#DAYS_LABEL} と対応
-   * @param p_turn_index ターン番号
-   * @returns 攻略メモ
-   */
-  static loadDayTurnStrategyMemo(p_day_index: number, p_turn_index: number): string {
-    return localStorage.getItem(`memo_${p_day_index}_${p_turn_index}`) ?? "";
-  }
-
-  /**
-   * 日ごとのターンごとの攻略メモを消します。
-   * @param p_day_index  曜日番号。{@link utils.ts#DAYS_LABEL} と対応
-   * @param p_turn_index ターン番号
-   */
-  static deleteDayTurnStrategyMemo(p_day_index: number, p_turn_index: number): void {
-    localStorage.removeItem(`memo_${p_day_index}_${p_turn_index}`);
   }
 }
