@@ -5,15 +5,13 @@
  */
 import React from "react";
 
-import { Box, Button, Divider, Flex, SimpleGrid } from "@chakra-ui/react";
-import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon} from "@chakra-ui/react";
+import { Button, Divider, Flex } from "@chakra-ui/react";
 
 import StorageManager from "../../../models/storageManager";
-import { DAYS_LABEL, getRangeArray } from "../../../models/utils";
+import { DAYS_LABEL } from "../../../models/utils";
 
 import FlagInputPanel from "./flagInputPanel";
 import StrategyMemo from "./strategyMemo";
-import TurnStrategyMemo from "../../battle/parts/turnStrategyMemo";
 
 /**
 * タブシートの初期値として必要な値をまとめた型です。
@@ -147,31 +145,7 @@ export default function WeeklyTabSheet(props: WeeklyTabSheetProps): JSX.Element 
         開始
       </Button>
       <Divider mb={4} />
-        <StrategyMemo dayIndex={props.dayIndex} />
-      <Divider />
-      <Accordion allowToggle mt={4}>
-        <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Box flex="1" textAlign="left">
-                ターンメモの編集
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel>
-            <SimpleGrid minChildWidth="15em" spacing="40px">
-              {
-                getRangeArray(10).map((_, index) => (
-                  <Box>
-                    <TurnStrategyMemo dayIndex={props.dayIndex} turnIndex={index + 1} />
-                  </Box>
-                ))
-              }
-            </SimpleGrid>
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+      <StrategyMemo dayIndex={props.dayIndex} />
     </Flex>
   );
 }

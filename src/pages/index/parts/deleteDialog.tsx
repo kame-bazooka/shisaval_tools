@@ -9,7 +9,7 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
 import { Button, Divider, Flex } from "@chakra-ui/react";
 
 import StorageManager from "../../../models/storageManager";
-import { DAYS_LABEL, getRangeArray } from "../../../models/utils";
+import { DAYS_LABEL } from "../../../models/utils";
 
 /**
  * {@link DeleteDialog}コンポーネントのプロパティです。
@@ -38,14 +38,11 @@ export default function DeleteDialog(props: DeleteDialogProps): JSX.Element {
    */
   const onMemoClear = () => {
     const vIsOk = window.confirm(
-      "ターンメモ含め、全ての曜日のすべてのメモと花丸を消します。\r\n\r\n本当によろしいですか？"
+      "全ての曜日のすべてのメモと花丸を消します。\r\n\r\n本当によろしいですか？"
     );
     if (vIsOk) {
       DAYS_LABEL.forEach((_, p_day_idx) => {
         StorageManager.deleteDayStrategyMemo(p_day_idx);
-        getRangeArray(10).forEach((p_turn_idx) => {
-          StorageManager.deleteDayTurnStrategyMemo(p_day_idx, p_turn_idx + 1);
-        });
         StorageManager.deleteDayWhiteFlower(p_day_idx);
         StorageManager.deleteDayMemoHeight(p_day_idx);
       });
