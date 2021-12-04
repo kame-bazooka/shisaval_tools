@@ -12,9 +12,9 @@ import StorageManager from "../../../models/storageManager";
 import { DAYS_LABEL } from "../../../models/utils";
 
 /**
- * {@link DeleteDialog}コンポーネントのプロパティです。
+ * {@link SettingDialog}コンポーネントのプロパティです。
  */
-export interface DeleteDialogProps {
+export interface SettingDialogProps {
   /**
    * ダイアログを表示するかを決めます。trueなら表示され、falseなら消えます。
    */
@@ -27,12 +27,12 @@ export interface DeleteDialogProps {
 }
 
 /**
- * 設定情報削除用ダイアログです。
+ * 設定情報ダイアログです。
  *
- * @param props {@link DeleteDialogProps}型のプロパティ
+ * @param props {@link SettingDialogProps}型のプロパティ
  * @returns 設定情報表示ダイアログ
  */
-export default function DeleteDialog(props: DeleteDialogProps): JSX.Element {
+export default function SettingDialog(props: SettingDialogProps): JSX.Element {
   /**
    * メモクリアボタンを押した時のイベントハンドラ
    */
@@ -72,7 +72,7 @@ export default function DeleteDialog(props: DeleteDialogProps): JSX.Element {
     <Modal onClose={props.onDialogClose} isOpen={props.isOpen}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>設定情報の削除</ModalHeader>
+        <ModalHeader>設定</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Flex flexDirection="column">
