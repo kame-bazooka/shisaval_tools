@@ -15,7 +15,6 @@ import FlagChooser from "../../components/flagChooser";
 
 import OrderChange from "./parts/orderChange";
 import StrategyMemo from "../battleSetup/parts/strategyMemo";
-import TurnStrategyMemo from "./parts/turnStrategyMemo";
 import HandsChooser from "./parts/handsChooser";
 import GeneralCounter from "./parts/generalCounter";
 
@@ -246,12 +245,6 @@ export default function Battle(props: BattleProps): JSX.Element {
               actionFlags={FPredictionBattleManager.flags().stack().getActionFlags()}
               tryFlags={FPredictionBattleManager.flags().stack().getTryFlags()}
             />
-          </Box>
-          <Box p={2} m={2} borderWidth={1}>
-            {
-              FBattleManager.getCurrentTurn() > 10 ? null :
-                <TurnStrategyMemo dayIndex={props.dayIndex} turnIndex={FBattleManager.getCurrentTurn()} />
-            }
           </Box>
           <Box p={2} m={2} borderWidth={1}>
             <GeneralCounter />
