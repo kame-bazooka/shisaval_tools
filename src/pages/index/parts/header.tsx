@@ -6,9 +6,9 @@
 import React from "react";
 
 import { Flex, Spacer, Text, IconButton, Switch, Box, useColorMode, useColorModeValue  } from "@chakra-ui/react";
-import { QuestionIcon, DeleteIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { QuestionIcon, SettingsIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 
-import DeleteDialog from "./deleteDialog";
+import SettingDialog from "./settingDialog";
 
 /**
 * 全ページの上に出てるヘッダを表すコンポーネントです。
@@ -17,9 +17,9 @@ import DeleteDialog from "./deleteDialog";
 */
 export default function Header(): JSX.Element {
   /**
-  * 削除ダイアログを表示するか。trueなら表示されます。
+  * 設定ダイアログを表示するか。trueなら表示されます。
   */
-  const [FDeleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+  const [FSettingDialogOpen, setSettingDialogOpen] = React.useState(false);
 
   const HeaderStyle = {
     backgroundColor: useColorModeValue("#3F51B5", "gray.900"),
@@ -39,17 +39,17 @@ export default function Header(): JSX.Element {
   }
 
   /**
-  * 削除ボタンを押すと呼ばれるイベントハンドラ
+  * 設定ボタンを押すと呼ばれるイベントハンドラ
   */
-  const onDeleteDialogOpen = () => {
-    setDeleteDialogOpen(true);
+  const onSettingDialogOpen = () => {
+    setSettingDialogOpen(true);
   }
 
   /**
-  * 削除ダイアログを閉じる必要がある時に呼ばれるイベントハンドラ
-  */
-  const onDeleteDialogClose = () => {
-    setDeleteDialogOpen(false);
+   * 設定ダイアログを閉じる必要がある時に呼ばれるイベントハンドラ
+   */
+  const onSettingDialogClose = () => {
+    setSettingDialogOpen(false);
   }
 
   // コンポーネント作って返す
@@ -62,10 +62,10 @@ export default function Header(): JSX.Element {
           { colorMode === "light" ? <SunIcon /> : <MoonIcon /> }
         </Box>
         <Switch colorScheme="red" display="flex" alignItems="center" marginRight={4} onChange={toggleColorMode} isChecked={colorMode === "dark"} />
-        <IconButton display="flex" aria-label="設定の削除" icon={<DeleteIcon />} alignItems="center" variant="outline" marginRight={2} onClick={onDeleteDialogOpen} />
+        <IconButton display="flex" aria-label="設定" icon={<SettingsIcon />} alignItems="center" variant="outline" marginRight={2} onClick={onSettingDialogOpen} />
         <IconButton display="flex" aria-label="ヘルプ" icon={<QuestionIcon />} alignItems="center" variant="outline" onClick={onHelpOpen} />
       </Flex>
-      <DeleteDialog isOpen={FDeleteDialogOpen} onDialogClose={onDeleteDialogClose} />
+      <SettingDialog isOpen={FSettingDialogOpen} onDialogClose={onSettingDialogClose} />
     </>
   );
 }

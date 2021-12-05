@@ -4,6 +4,8 @@
  * @license MIT License
  */
 
+import { DAYS_LABEL } from "./utils";
+
 /**
  * {@link StorageManager.loadDayFlag}で使うパラメータ
  */
@@ -29,6 +31,57 @@ export type DayFlagParamType = {
  * メソッドは全部 static
  */
 export default class StorageManager {
+  /**
+   * メモとフラッグ情報と花丸情報が書かれたJSONを生成します。
+   * @returns JSON文字列
+   */
+  static getSettingJSON(): string {
+    return JSON.stringify(
+      Object.assign(
+        {},
+        ...DAYS_LABEL.map((_, p_day: number) => ({[`flower_${p_day}`]: StorageManager.loadDayWhiteFlower(p_day)})),
+        ...DAYS_LABEL.map((_, p_day: number) => ({[`flag_${p_day}`]: StorageManager.loadDayFlag(p_day)})),
+        ...DAYS_LABEL.map((_, p_day: number) => ({[`memo_${p_day}`]: StorageManager.loadDayStrategyMemo(p_day)}))
+      )
+    );
+  }
+
+  /**
+   * メモとフラッグと花丸情報をJSONから読み出します。
+   *
+   * 読み込みをした後は、一度リロードを入れてください。
+   *
+   * @param p_json JSON文字列。
+   */
+  /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+  /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+  /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+  static loadSettingJSON(p_json: string) {
+    const vSetting: any = JSON.parse(p_json);
+    DAYS_LABEL.forEach((_, p_day: number) => {
+      if (vSetting[`flower_${p_day}`]) {
+        StorageManager.saveDayWhiteFlower(p_day, vSetting[`flower_${p_day}`]);
+      }
+      if (vSetting[`flag_${p_day}`]) {
+        if (vSetting[`flag_${p_day}`]["beatCount"]) {
+          StorageManager.saveDayBeatFlag(p_day, vSetting[`flag_${p_day}`]["beatCount"]);
+        }
+        if (vSetting[`flag_${p_day}`]["actionCount"]) {
+          StorageManager.saveDayActionFlag(p_day, vSetting[`flag_${p_day}`]["actionCount"]);
+        }
+        if (vSetting[`flag_${p_day}`]["tryCount"]) {
+          StorageManager.saveDayTryFlag(p_day, vSetting[`flag_${p_day}`]["tryCount"]);
+        }
+      }
+      if (vSetting[`memo_${p_day}`]) {
+        StorageManager.saveDayStrategyMemo(p_day, vSetting[`memo_${p_day}`]);
+      }
+    });
+  }
+  /* eslint-enable @typescript-eslint/explicit-module-boundary-types */
+  /* eslint-enable @typescript-eslint/no-unsafe-assignment */
+  /* eslint-enable @typescript-eslint/no-unsafe-member-access */
+
   /**
    * 日ごとの攻略メモの高さを保存します。
    * @param p_day_index 曜日番号。{@link utils.ts#DAYS_LABEL} と対応
